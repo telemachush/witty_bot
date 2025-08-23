@@ -87,22 +87,22 @@ def handle_status_command(ack, command):
         # Generate status message
         status_message = llm_client.generate_status(text)
         
-        # Post the status message
-        response_text = f"🤖 Here's your {text} status:\n\n> *{status_message}*"
         
         try:
-            app.client.chat_postEphemeral(
+            # Try to post as a regular message in the channel
+            logger.info(f"Attempting to post to channel {channel_id}")
+            app.client.chat_postMessage(
                 channel=channel_id,
-                user=user_id,
-                text=response_text
+                text=f"🤖 <@{user_id}> here's your {text} status:\n\n> *{status_message}*"
             )
+            logger.info(f"Successfully posted to channel {channel_id}")
         except Exception as e:
-            # If ephemeral message fails, try direct message
-            logger.warning(f"Ephemeral message failed: {e}, trying DM")
+            # If channel message fails, try direct message
+            logger.warning(f"Channel message failed: {e}, trying DM")
             try:
                 app.client.chat_postMessage(
                     channel=user_id,
-                    text=response_text
+                    text=f"🤖 Here's your {text} status:\n\n> *{status_message}*"
                 )
             except Exception as dm_error:
                 logger.error(f"Direct message also failed: {dm_error}")
@@ -125,8 +125,8 @@ def handle_status_command(ack, command):
             try:
                 app.client.chat_postMessage(
                     channel=command.get("user_id"),
-                    text="❌ Sorry, something went wrong generating your status message. " \
-                         "Please try again."
+                    text="❌ Sorry, something went wrong generating your status " \
+                         "message. Please try again."
                 )
             except Exception as dm_error:
                 logger.error(f"Failed to send error message: {dm_error}")
