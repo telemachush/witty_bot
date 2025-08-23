@@ -92,6 +92,8 @@ class LLMClient:
             return self._generate_with_local(status_type)
         elif self.provider == "ollama":
             return self._generate_with_ollama(status_type)
+        elif self.provider == "templates":
+            return None  # Will fall back to templates
         else:
             return None
     

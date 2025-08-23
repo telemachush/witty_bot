@@ -6,11 +6,11 @@ import os
 from typing import Dict, List
 
 # LLM Configuration
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "templates")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LOCAL_MODEL_NAME = os.getenv("LOCAL_MODEL_NAME", "distilbert-base-uncased")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama2:7b")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "tinyllama:1b")
 
 # Status Types and their descriptions
 STATUS_TYPES = {

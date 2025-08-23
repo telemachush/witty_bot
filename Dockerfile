@@ -57,7 +57,7 @@ done\n\
 \n\
 # Pull the model if not already present\n\
 echo "Setting up Ollama model..."\n\
-ollama pull llama2:7b || echo "Model pull failed, will use templates"\n\
+ollama pull tinyllama:1b || echo "Model pull failed, will use templates"\n\
 \n\
 # Start the Flask app\n\
 echo "Starting Witty Bot..."\n\
