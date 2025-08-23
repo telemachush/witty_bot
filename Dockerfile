@@ -37,17 +37,27 @@ COPY . .
 
 # Create a startup script
 RUN echo '#!/bin/bash\n\
+set -e\n\
+\n\
 # Start Ollama in the background\n\
+echo "Starting Ollama..."\n\
 ollama serve &\n\
 OLLAMA_PID=$!\n\
 \n\
 # Wait for Ollama to be ready\n\
 echo "Waiting for Ollama to start..."\n\
-sleep 10\n\
+for i in {1..30}; do\n\
+    if curl -s http://127.0.0.1:11434/api/tags > /dev/null 2>&1; then\n\
+        echo "Ollama is ready!"\n\
+        break\n\
+    fi\n\
+    echo "Waiting for Ollama... ($i/30)"\n\
+    sleep 2\n\
+done\n\
 \n\
 # Pull the model if not already present\n\
 echo "Setting up Ollama model..."\n\
-ollama pull llama2:7b || true\n\
+ollama pull llama2:7b || echo "Model pull failed, will use templates"\n\
 \n\
 # Start the Flask app\n\
 echo "Starting Witty Bot..."\n\

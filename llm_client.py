@@ -253,8 +253,13 @@ class LLMClient:
     def _test_ollama_connection(self) -> bool:
         """Test if Ollama is running and accessible"""
         try:
-            response = self.session.get(f"{self.ollama_url}/api/tags", timeout=5)
-            return response.status_code == 200
+            response = self.session.get(f"{self.ollama_url}/api/tags", timeout=10)
+            if response.status_code == 200:
+                logger.info("✅ Ollama connection successful")
+                return True
+            else:
+                logger.warning(f"Ollama returned status {response.status_code}")
+                return False
         except Exception as e:
             logger.error(f"Ollama connection test failed: {e}")
             return False 

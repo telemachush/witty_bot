@@ -53,17 +53,12 @@ def handle_status_command(ack, command):
         if not text:
             help_text = _get_help_text()
             try:
-                app.client.chat_postEphemeral(
-                    channel=channel_id,
-                    user=user_id,
-                    text=help_text
-                )
-            except Exception as e:
-                # If ephemeral fails, try direct message
                 app.client.chat_postMessage(
                     channel=user_id,
                     text=help_text
                 )
+            except Exception as e:
+                logger.error(f"Failed to send help text: {e}")
             return
         
         # Check if status type is valid
@@ -71,65 +66,43 @@ def handle_status_command(ack, command):
             help_text = _get_help_text()
             error_text = f"❌ Unknown status type: `{text}`\n\n{help_text}"
             try:
-                app.client.chat_postEphemeral(
-                    channel=channel_id,
-                    user=user_id,
-                    text=error_text
-                )
-            except Exception as e:
-                # If ephemeral fails, try direct message
                 app.client.chat_postMessage(
                     channel=user_id,
                     text=error_text
                 )
+            except Exception as e:
+                logger.error(f"Failed to send error message: {e}")
             return
         
         # Generate status message
         status_message = llm_client.generate_status(text)
         
+        # Send as direct message
+        response_text = f"🤖 Here's your {text} status:\n\n> *{status_message}*"
         
         try:
-            # Try to post as a regular message in the channel
-            logger.info(f"Attempting to post to channel {channel_id}")
             app.client.chat_postMessage(
-                channel=channel_id,
-                text=f"🤖 <@{user_id}> here's your {text} status:\n\n> *{status_message}*"
+                channel=user_id,
+                text=response_text
             )
-            logger.info(f"Successfully posted to channel {channel_id}")
+            logger.info(f"Successfully sent status to user {user_id}")
         except Exception as e:
-            # If channel message fails, try direct message
-            logger.warning(f"Channel message failed: {e}, trying DM")
-            try:
-                app.client.chat_postMessage(
-                    channel=user_id,
-                    text=f"🤖 Here's your {text} status:\n\n> *{status_message}*"
-                )
-            except Exception as dm_error:
-                logger.error(f"Direct message also failed: {dm_error}")
-                # Fallback: just log the status
-                logger.info(f"Status for {user_id}: {status_message}")
+            logger.error(f"Failed to send direct message: {e}")
+            # Fallback: just log the status
+            logger.info(f"Status for {user_id}: {status_message}")
         
         logger.info(f"Generated status for {user_id}: {status_message}")
         
     except Exception as e:
         logger.error(f"Error handling status command: {e}")
         try:
-            app.client.chat_postEphemeral(
-                channel=command.get("channel_id"),
-                user=command.get("user_id"),
+            app.client.chat_postMessage(
+                channel=command.get("user_id"),
                 text="❌ Sorry, something went wrong generating your status message. " \
                      "Please try again."
             )
-        except Exception as msg_error:
-            # If ephemeral fails, try direct message
-            try:
-                app.client.chat_postMessage(
-                    channel=command.get("user_id"),
-                    text="❌ Sorry, something went wrong generating your status " \
-                         "message. Please try again."
-                )
-            except Exception as dm_error:
-                logger.error(f"Failed to send error message: {dm_error}")
+        except Exception as dm_error:
+            logger.error(f"Failed to send error message: {dm_error}")
 
 def _get_help_text():
     """Generate help text for the command"""
