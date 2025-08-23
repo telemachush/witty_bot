@@ -121,7 +121,7 @@ Add these **Bot Token Scopes**:
 | `SLACK_SIGNING_SECRET` | Your Slack app signing secret | ✅ | - |
 | `LLM_PROVIDER` | LLM provider (openai, ollama) | ❌ | `openai` |
 | `OPENAI_API_KEY` | OpenAI API key (if using OpenAI) | ❌ | - |
-| `OLLAMA_MODEL` | Ollama model name | ❌ | `tinyllama:1b` |
+| `OLLAMA_MODEL` | Ollama model name | ❌ | `phi3:mini` |
 
 ### LLM Providers
 

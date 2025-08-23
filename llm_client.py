@@ -160,6 +160,8 @@ class LLMClient:
                 avoid_words=", ".join(UNPROFESSIONAL_WORDS[:5])
             )
             
+            logger.info(f"Attempting to generate with Ollama model: {self.ollama_model}")
+            
             response = self.session.post(
                 f"{self.ollama_url}/api/generate",
                 json={
@@ -175,12 +177,16 @@ class LLMClient:
                 timeout=10
             )
             
+            logger.info(f"Ollama response status: {response.status_code}")
+            
             if response.status_code == 200:
                 result = response.json()
                 generated_text = result.get("response", "").strip()
+                logger.info(f"Ollama generated: {generated_text}")
                 return self._clean_response(generated_text)
-            
-            return None
+            else:
+                logger.error(f"Ollama API error: {response.status_code} - {response.text}")
+                return None
             
         except Exception as e:
             logger.error(f"Error generating with Ollama: {e}")
@@ -259,8 +265,17 @@ class LLMClient:
         try:
             response = self.session.get(f"{self.ollama_url}/api/tags", timeout=20)
             if response.status_code == 200:
-                logger.info("✅ Ollama connection successful")
-                return True
+                models = response.json().get("models", [])
+                logger.info(f"✅ Ollama connection successful. Available models: {[m.get('name', 'unknown') for m in models]}")
+                
+                # Check if our model is available
+                model_names = [m.get('name', '') for m in models]
+                if self.ollama_model in model_names:
+                    logger.info(f"✅ Model {self.ollama_model} is available")
+                    return True
+                else:
+                    logger.warning(f"⚠️ Model {self.ollama_model} not found. Available: {model_names}")
+                    return False
             else:
                 logger.warning(f"Ollama returned status {response.status_code}")
                 return False
