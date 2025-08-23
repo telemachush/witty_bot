@@ -14,16 +14,14 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "tinyllama:1b")
 
 # Status Types and their descriptions
 STATUS_TYPES = {
-    "busy": "Working hard on something important",
-    "away": "Not available",
-    "lunch": "Eating lunch/dinner",
+    "lunch": "Eating lunch",
+    "dinner": "Eating dinner",
     "short_break": "Taking a short break",
     "break": "Taking a break",
     "long_break": "Taking a long break",
     "coffee": "Getting coffee or a drink",
     "walk": "Taking a walk or exercise break",
     "errands": "Running errands or out of office",
-    "sick": "Sick or not feeling well",
     "travel": "Traveling or on the road",
 }
 
@@ -37,36 +35,6 @@ UNPROFESSIONAL_WORDS = [
 
 # Funny but professional status templates
 STATUS_TEMPLATES = {
-    "busy": [
-        "Drowning in code and loving it",
-        "Debugging my life choices",
-        "In a meeting that could have been an email",
-        "Pretending to understand this code",
-        "Fighting with my computer",
-        "Making the magic happen",
-        "Deep in the matrix",
-        "Caffeinated and confused"
-    ],
-    "away": [
-        "Probably getting coffee",
-        "Lost in thought (and space)",
-        "Taking a mental health break",
-        "Pretending to be productive",
-        "Staring at walls",
-        "Questioning my career choices",
-        "On a walk to clear my head",
-        "Probably napping"
-    ],
-    "meeting": [
-        "In a meeting that could have been an email",
-        "Pretending to pay attention",
-        "Counting ceiling tiles",
-        "Planning my escape route",
-        "Taking notes (of my grocery list)",
-        "In a very important meeting",
-        "Discussing things that matter",
-        "Collaborating (or trying to)"
-    ],
     "lunch": [
         "Eating my feelings",
         "Fueling up for the afternoon",
@@ -75,17 +43,29 @@ STATUS_TEMPLATES = {
         "Eating and scrolling",
         "Refueling the machine",
         "Taking a food break",
-        "Lunch time adventures"
+        "Lunch time adventures",
+        "Chewing and contemplating life",
+        "Midday fuel injection"
     ],
-    "focus": [
-        "Do not disturb (seriously)",
-        "In the zone (or trying to be)",
-        "Deep work mode activated",
-        "Pretending to be productive",
-        "Focused and fabulous",
-        "In my element",
-        "Making things happen",
-        "Concentration station"
+    "dinner": [
+        "Dinner time - adulting at its finest",
+        "Cooking up some magic",
+        "Evening fuel for tomorrow",
+        "Dinner and daydreaming",
+        "Chef mode activated",
+        "Evening sustenance ritual",
+        "Dinner date with my kitchen",
+        "Cooking my way to happiness"
+    ],
+    "short_break": [
+        "Quick mental reset",
+        "Brief pause for sanity",
+        "Micro-break for maximum focus",
+        "Quick escape from reality",
+        "Brief moment of peace",
+        "Short break, long thoughts",
+        "Quick recharge session",
+        "Brief pause for perspective"
     ],
     "break": [
         "Taking a mental health break",
@@ -95,7 +75,59 @@ STATUS_TEMPLATES = {
         "Taking a moment",
         "Recharging my batteries",
         "Quick escape",
-        "Break time bliss"
+        "Break time bliss",
+        "Pause for the cause",
+        "Break time - brain maintenance"
+    ],
+    "long_break": [
+        "Extended mental vacation",
+        "Long break for deep thoughts",
+        "Extended recharge session",
+        "Long pause for perspective",
+        "Extended escape from reality",
+        "Long break, longer thoughts",
+        "Extended mental reset",
+        "Long break for maximum zen"
+    ],
+    "coffee": [
+        "Caffeinated and confused",
+        "Coffee break - sanity restored",
+        "Fueled by caffeine and hope",
+        "Coffee time - adulting properly",
+        "Caffeinated and ready for chaos",
+        "Coffee break for clarity",
+        "Fueled by beans and dreams",
+        "Coffee time - brain activation"
+    ],
+    "walk": [
+        "Walking and thinking",
+        "Exercise break for sanity",
+        "Walking my way to clarity",
+        "Fresh air and fresh thoughts",
+        "Walking break - nature therapy",
+        "Exercise mode activated",
+        "Walking and daydreaming",
+        "Fresh air for fresh ideas"
+    ],
+    "errands": [
+        "Adulting in progress",
+        "Running errands like a grown-up",
+        "Errand time - life admin",
+        "Adult responsibilities calling",
+        "Errand break - real world stuff",
+        "Life admin in progress",
+        "Errand time - adulting properly",
+        "Running errands, avoiding work"
+    ],
+    "travel": [
+        "Traveling and working remotely",
+        "On the road to somewhere",
+        "Travel mode activated",
+        "Working from the road",
+        "Traveling and contemplating life",
+        "On the move and online",
+        "Travel break - exploring life",
+        "Working from anywhere"
     ]
 }
 

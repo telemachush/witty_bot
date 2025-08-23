@@ -203,7 +203,9 @@ class LLMClient:
     
     def _get_template_status(self, status_type: str) -> str:
         """Get a random template status message"""
-        templates = STATUS_TEMPLATES.get(status_type, STATUS_TEMPLATES.get("busy", ["Working hard"]))
+        templates = STATUS_TEMPLATES.get(status_type)
+        if not templates:
+            return "No template found for this status type"
         return random.choice(templates)
     
     def _is_appropriate(self, text: str) -> bool:
@@ -255,7 +257,7 @@ class LLMClient:
     def _test_ollama_connection(self) -> bool:
         """Test if Ollama is running and accessible"""
         try:
-            response = self.session.get(f"{self.ollama_url}/api/tags", timeout=10)
+            response = self.session.get(f"{self.ollama_url}/api/tags", timeout=20)
             if response.status_code == 200:
                 logger.info("✅ Ollama connection successful")
                 return True
