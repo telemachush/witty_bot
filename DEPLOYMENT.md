@@ -1,4 +1,4 @@
-# Deployment Guide for StatusSage Bot
+# Deployment Guide for Witty Bot
 
 This guide covers multiple deployment options for your Slack Status Bot with Docker containerization.
 
@@ -33,7 +33,7 @@ The app is now fully containerized with Ollama included, making it easy to deplo
 3. **Connect your GitHub** repository
 4. **Configure**:
    - Build Command: `docker build -t status-bot .`
-   - Start Command: `docker run -p 5000:5000 status-bot`
+   - Start Command: `docker run -p 5500:5500 status-bot`
    - Environment: Docker
 
 5. **Set environment variables** in Render dashboard:
@@ -86,7 +86,7 @@ The app is now fully containerized with Ollama included, making it easy to deplo
 4. **For testing with ngrok**:
    ```bash
    # In another terminal
-   ngrok http 5000
+   ngrok http 5500
    ```
 
 5. **Use the ngrok URL** in Slack app configuration:
@@ -99,7 +99,7 @@ The app is now fully containerized with Ollama included, making it easy to deplo
 docker build -t status-bot .
 
 # Run the container
-docker run -p 5000:5000 \
+docker run -p 5500:5500 \
   -e SLACK_BOT_TOKEN=your-token \
   -e SLACK_SIGNING_SECRET=your-secret \
   -e LLM_PROVIDER=ollama \

@@ -17,7 +17,7 @@ def test_docker_setup():
     # Test health endpoint
     print("🔍 Testing health endpoint...")
     try:
-        response = requests.get("http://localhost:5000/health", timeout=10)
+        response = requests.get("http://localhost:5500/health", timeout=10)
         if response.status_code == 200:
             data = response.json()
             print(f"✅ Health check passed: {data}")
@@ -29,7 +29,7 @@ def test_docker_setup():
     # Test home endpoint
     print("\n🏠 Testing home endpoint...")
     try:
-        response = requests.get("http://localhost:5000/", timeout=10)
+        response = requests.get("http://localhost:5500/", timeout=10)
         if response.status_code == 200:
             data = response.json()
             print(f"✅ Home endpoint: {data}")

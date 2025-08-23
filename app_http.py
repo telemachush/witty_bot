@@ -88,7 +88,8 @@ def handle_status_command(ack, command):
         app.client.chat_postEphemeral(
             channel=command.get("channel_id"),
             user=command.get("user_id"),
-            text="❌ Sorry, something went wrong generating your status message. Please try again."
+            text="❌ Sorry, something went wrong generating your status message. " \
+                 "Please try again."
         )
 
 def _get_help_text():
@@ -122,7 +123,7 @@ def health_check():
 def home():
     """Home endpoint"""
     return jsonify({
-        "message": "StatusSage Bot is running!",
+        "message": "Witty Bot is running!",
         "llm_provider": llm_client.provider,
         "status_types": list(STATUS_TYPES.keys())
     })
@@ -135,10 +136,10 @@ def main():
     else:
         logger.warning(f"⚠️  {llm_client.provider} not available, will use template messages")
     
-    # Get port from environment or default to 5000
-    port = int(os.environ.get("PORT", 5000))
+    # Get port from environment or default to 5500
+    port = int(os.environ.get("PORT", 5500))
     
-    logger.info(f"🚀 Starting StatusSage Bot on port {port}...")
+    logger.info(f"🚀 Starting Witty Bot on port {port}...")
     flask_app.run(host="0.0.0.0", port=port, debug=False)
 
 if __name__ == "__main__":

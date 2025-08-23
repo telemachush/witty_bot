@@ -50,16 +50,16 @@ echo "Setting up Ollama model..."\n\
 ollama pull llama2:7b || true\n\
 \n\
 # Start the Flask app\n\
-echo "Starting StatusSage Bot..."\n\
+echo "Starting Witty Bot..."\n\
 exec python app_http.py\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Expose port
-EXPOSE 5000
+EXPOSE 5500
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:5000/health || exit 1
+    CMD curl -f http://localhost:5500/health || exit 1
 
 # Start the application
 CMD ["/app/start.sh"]
