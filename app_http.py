@@ -78,12 +78,11 @@ def handle_status_command(ack, command):
         status_message = llm_client.generate_status(text)
         
         # Send as direct message
-        response_text = f"🤖 Here's your {text} status:\n\n> *{status_message}*"
         
         try:
             app.client.chat_postMessage(
                 channel=user_id,
-                text=response_text
+                text=status_message
             )
             logger.info(f"Successfully sent status to user {user_id}")
         except Exception as e:

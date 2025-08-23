@@ -29,9 +29,9 @@ app = App(
 # Initialize LLM client
 llm_client = LLMClient()
 
-@app.command("/status_msg")
+@app.command("/witty_status")
 def handle_status_command(ack, command):
-    """Handle the /status_msg slash command"""
+    """Handle the /witty_status slash command"""
     ack()
     
     try:
@@ -65,13 +65,10 @@ def handle_status_command(ack, command):
         # Generate status message
         status_message = llm_client.generate_status(text)
         
-        # Post the status message
-        response_text = f"🤖 Here's your {text} status:\n\n> *{status_message}*"
-        
         app.client.chat_postEphemeral(
             channel=channel_id,
             user=user_id,
-            text=response_text
+            text=status_message
         )
         
         logger.info(f"Generated status for {user_id}: {status_message}")
@@ -90,15 +87,15 @@ def _get_help_text():
     for status_type, description in STATUS_TYPES.items():
         help_text += f"• `{status_type}` - {description}\n"
     
-    help_text += "\n💡 *Usage:* `/status_msg [type]`\n"
-    help_text += "Example: `/status_msg busy`"
+    help_text += "\n💡 *Usage:* `/witty_status [type]`\n"
+    help_text += "Example: `/witty_status busy`"
     
     return help_text
 
 @app.event("app_mention")
 def handle_app_mention(event, say):
     """Handle when the bot is mentioned"""
-    say("👋 Hi! I'm the Status Bot. Use `/status_msg [type]` to generate a funny status message!")
+    say("👋 Hi! I'm the Witty Bot. Use `/witty_status [type]` to generate a funny status message!")
 
 @app.event("message")
 def handle_message(event):

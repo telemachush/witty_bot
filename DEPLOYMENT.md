@@ -126,7 +126,7 @@ python app_http.py
 ### Required Settings:
 
 1. **Slash Commands**:
-   - Command: `/status_msg`
+   - Command: `/witty_status`
    - Request URL: `https://your-deployed-url.com/slack/events`
    - Short Description: "Generate funny status messages"
 
