@@ -245,7 +245,7 @@ witty_bot/
 
 4. **Ollama memory issues**
    - Use `LLM_PROVIDER=templates` for reliable operation
-   - Or use smaller models like `tinyllama:1b`
+   - Or use smaller models like `llama3.2:3b`
 
 ### Environment Variables Checklist
 
