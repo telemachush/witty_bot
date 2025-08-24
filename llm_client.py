@@ -71,13 +71,33 @@ class LLMClient:
     def generate_status(self, status_type: str) -> str:
         """
         Generate a funny status message for the given status type.
-        Falls back to template messages if LLM is unavailable.
+        Falls back to template messages if LLM is unavailable or slow.
         """
+        # For templates provider, use templates directly
+        if self.provider == "templates":
+            return self._get_template_status(status_type)
+        
         try:
-            # Try to generate with LLM first
-            llm_response = self._generate_with_llm(status_type)
-            if llm_response and self._is_appropriate(llm_response):
-                return llm_response
+            # Try to generate with LLM first (with timeout)
+            import signal
+            
+            def timeout_handler(signum, frame):
+                raise TimeoutError("LLM generation timed out")
+            
+            # Set a 10-second timeout for LLM generation
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(10)
+            
+            try:
+                llm_response = self._generate_with_llm(status_type)
+                signal.alarm(0)  # Cancel the alarm
+                
+                if llm_response and self._is_appropriate(llm_response):
+                    return llm_response
+            except (TimeoutError, Exception) as e:
+                signal.alarm(0)  # Cancel the alarm
+                logger.warning(f"LLM generation failed or timed out: {e}")
+                
         except Exception as e:
             logger.warning(f"LLM generation failed: {e}")
         
@@ -166,11 +186,13 @@ class LLMClient:
                     "prompt": prompt,
                     "stream": False,
                     "options": {
-                        "temperature": 0.8,
-                        "top_p": 0.9
+                        "temperature": 0.7,
+                        "top_p": 0.8,
+                        "num_predict": 20,
+                        "repeat_penalty": 1.1
                     }
                 },
-                timeout=30
+                timeout=15
             )
             
             logger.info(f"Ollama response status: {response.status_code}")

@@ -259,6 +259,19 @@ LLM_PROVIDER=templates
 ```
 
 
+## ⚡ Performance Optimization
+
+### For Fastest Response Times:
+- **Use `LLM_PROVIDER=templates`** - Instant responses, no loading time
+- **No external dependencies** - Works reliably on any platform
+- **Professional quality** - Pre-curated funny messages
+
+### For LLM Models (Slower but Dynamic):
+- **Use smaller models** like `qwen3:0.6b` or `tinyllama:1b`
+- **Set shorter timeouts** - 10-15 seconds max
+- **Use simplified prompts** - Faster generation
+- **Consider paid platforms** - More memory and CPU
+
 ## 🤝 Contributing
 
 1. Fork the repository
