@@ -78,25 +78,11 @@ class LLMClient:
             return self._get_template_status(status_type)
         
         try:
-            # Try to generate with LLM first (with timeout)
-            import signal
+            # Try to generate with LLM first
+            llm_response = self._generate_with_llm(status_type)
             
-            def timeout_handler(signum, frame):
-                raise TimeoutError("LLM generation timed out")
-            
-            # Set a 10-second timeout for LLM generation
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(10)
-            
-            try:
-                llm_response = self._generate_with_llm(status_type)
-                signal.alarm(0)  # Cancel the alarm
-                
-                if llm_response and self._is_appropriate(llm_response):
-                    return llm_response
-            except (TimeoutError, Exception) as e:
-                signal.alarm(0)  # Cancel the alarm
-                logger.warning(f"LLM generation failed or timed out: {e}")
+            if llm_response and self._is_appropriate(llm_response):
+                return llm_response
                 
         except Exception as e:
             logger.warning(f"LLM generation failed: {e}")
@@ -192,7 +178,7 @@ class LLMClient:
                         "repeat_penalty": 1.1
                     }
                 },
-                timeout=15
+                timeout=8
             )
             
             logger.info(f"Ollama response status: {response.status_code}")
