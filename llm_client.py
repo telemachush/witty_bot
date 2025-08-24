@@ -154,11 +154,8 @@ class LLMClient:
     def _generate_with_ollama(self, status_type: str) -> Optional[str]:
         """Generate status message using Ollama LLM"""
         try:
-            prompt = PROMPT_TEMPLATE.format(
-                status_type=status_type,
-                context=f"User wants a {status_type} status message",
-                avoid_words=", ".join(UNPROFESSIONAL_WORDS[:5])
-            )
+            # Simplified prompt for faster generation
+            prompt = f"Generate a funny {status_type} status message (max 50 chars): "
             
             logger.info(f"Attempting to generate with Ollama model: {self.ollama_model}")
             
@@ -170,11 +167,10 @@ class LLMClient:
                     "stream": False,
                     "options": {
                         "temperature": 0.8,
-                        "top_p": 0.9,
-                        "max_tokens": 100
+                        "top_p": 0.9
                     }
                 },
-                timeout=10
+                timeout=30
             )
             
             logger.info(f"Ollama response status: {response.status_code}")

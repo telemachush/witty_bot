@@ -28,7 +28,41 @@ A fun and intelligent Slack bot that generates witty, professional status messag
 6. **Get your URL**: Railway provides a URL like `https://your-app.railway.app`
 7. **Configure Slack**: Set Request URL to `https://your-app.railway.app/slack/events`
 
-### Option 2: Local Development
+### Option 2: Deploy to Render (LLM Support)
+
+1. **Fork this repository** to your GitHub account
+2. **Sign up** at [render.com](https://render.com)
+3. **Create a new Web Service**
+4. **Connect your GitHub** repository
+5. **Configure**:
+   - **Environment**: Docker
+   - **Build Command**: `docker build -t witty-bot .`
+   - **Start Command**: `/app/start.sh`
+6. **Set environment variables** in Render dashboard:
+   ```
+   SLACK_BOT_TOKEN=xoxb-your-bot-token-here
+   SLACK_SIGNING_SECRET=your-signing-secret-here
+   LLM_PROVIDER=ollama
+   OLLAMA_MODEL=qwen3:0.6b
+   ```
+7. **Deploy** and get your URL
+8. **Configure Slack** with the URL + `/slack/events`
+
+### Option 3: Deploy to DigitalOcean App Platform
+
+1. **Sign up** at [digitalocean.com](https://digitalocean.com)
+2. **Create App** from GitHub repository
+3. **Configure** environment variables:
+   ```
+   SLACK_BOT_TOKEN=xoxb-your-bot-token-here
+   SLACK_SIGNING_SECRET=your-signing-secret-here
+   LLM_PROVIDER=ollama
+   OLLAMA_MODEL=phi3:mini
+   ```
+4. **Deploy** and get your URL
+5. **Configure Slack** with the URL + `/slack/events`
+
+### Option 4: Local Development
 
 1. **Clone the repository**:
    ```bash
@@ -119,14 +153,15 @@ Add these **Bot Token Scopes**:
 |----------|-------------|----------|---------|
 | `SLACK_BOT_TOKEN` | Your Slack bot token | ✅ | - |
 | `SLACK_SIGNING_SECRET` | Your Slack app signing secret | ✅ | - |
-| `LLM_PROVIDER` | LLM provider (openai, ollama) | ❌ | `openai` |
+| `LLM_PROVIDER` | LLM provider (templates, openai, ollama) | ❌ | `templates` |
 | `OPENAI_API_KEY` | OpenAI API key (if using OpenAI) | ❌ | - |
 | `OLLAMA_MODEL` | Ollama model name | ❌ | `qwen3:0.6b` |
 
 ### LLM Providers
 
-1. **OpenAI** (Recommended): Uses GPT-3.5-turbo for dynamic responses
-2. **Ollama**: Uses local LLM models (requires more resources)
+1. **Templates** (Recommended): Uses pre-written funny messages - instant and reliable
+2. **OpenAI**: Uses GPT-3.5-turbo for dynamic responses
+3. **Ollama**: Uses local LLM models (requires more resources)
 
 ## 🐳 Docker Deployment
 
@@ -222,6 +257,7 @@ SLACK_SIGNING_SECRET=your-signing-secret
 # Optional (recommended for Railway)
 LLM_PROVIDER=templates
 ```
+
 
 ## 🤝 Contributing
 
